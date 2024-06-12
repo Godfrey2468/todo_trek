@@ -1,0 +1,46 @@
+version: '3.7'
+
+services:
+
+  postgres:
+    image: postgres:16
+    container_name: vscode_remote_postgres
+    restart: always
+    ports:
+     - 15432:5432
+    volumes:
+     - ./docker/data/postgres:/var/lib/postgres/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        # Elixir Version: 1.9, 1.10, 1.10.4, ...
+        VARIANT: "1.15.7"
+        # Phoenix Version: 1.4.17, 1.5.4, ...
+        PHOENIX_VERSION: "1.7.7"
+        # Node Version: 12, 14, ...
+        NODE_VERSION: "20.4.0"
+    container_name: vscode_remote_app
+    ports:
+      - 4050:4050
+    environment:
+      PGUSER: postgres
+      PGPASSWORD: postgres
+      PGDATABASE: forms_dev
+      PGPORT: 15432
+    volumes:
+      - .:/workspace
+      - ~/.gitconfig:/root/.gitconfig
+      - ~/.ssh:/root/.ssh
+    command: sleep infinity
+    depends_on:
+      - postgres
+  
+  
+# volumes:
+#   postgres-data:

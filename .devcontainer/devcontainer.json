@@ -1,0 +1,25 @@
+{
+    "name": "VSCode Remote",
+    "dockerComposeFile": [
+        "../docker-compose.yml"
+    ],
+    // "extensions": [
+    //     "jakebecker.elixir-ls"
+    // ],
+    // Configure tool-specific properties.
+	"customizations": {
+		// Configure properties specific to VS Code.
+		"vscode": {
+			// Add the IDs of extensions you want installed when the container is created.
+			"extensions": [
+				"jakebecker.elixir-ls",
+                "ms-azuretools.vscode-docker"
+			]
+		}
+	},
+    "service": "app",
+    "workspaceFolder": "/workspace",
+    "forwardPorts": [4050],
+    "remoteUser": "vscode",
+    "shutdownAction": "stopCompose"
+}
